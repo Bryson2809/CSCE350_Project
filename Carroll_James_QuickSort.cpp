@@ -22,6 +22,14 @@ private:
 			return last;
 	}
 
+	static void swap(int leftIndex, int rightIndex, array<float, MAX_VALUES>& arr)
+	{
+		float temp = 0.0;
+		temp = arr[leftIndex];
+		arr[leftIndex] = arr[rightIndex];
+		arr[rightIndex] = temp;
+	}
+
 public:
 	HelperFunctions()
 	{
@@ -33,22 +41,19 @@ public:
 
 	}
 
-	static array<float, MAX_VALUES> sort_array(array<float, MAX_VALUES> arr)
+	static void sort_array(array<float, MAX_VALUES>& arr)
 	{
 		float temp = 0.0;
-		for (int i = 0; arr[i + 1] != NULL; i++)
+		for (int i = 0; arr[i] != NULL; i++)
 		{
-			for (int j = i; arr[j + 1] != NULL; j++)
+			for (int j = i; arr[j] != NULL; j++)
 			{
 				if (arr[i] > arr[j])
 				{
-					temp = arr[j];
-					arr[j] = arr[i];
-					arr[i] = temp;
+					HelperFunctions::swap(i, j, arr);
 				}
 			}
 		}
-		return arr;
 	}
 };
 
@@ -72,22 +77,9 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; input >> values[i]; i++);
 
-	// cout << "Should be 3 4 8 5 1 44 56 73 69 420 32 12" << endl;
-
-	// for (int i = 0; values[i + 1] != NULL; i++)
-	// {
-	// 	cout << values[i] << endl;
-	// }
-
 	input.close();
 	
-	values = HelperFunctions::sort_array(values);
-
-	// cout << "\nSorted Array Hopefully----------------------\n" << endl;
-	// for (int i = 0; values[i + 1] != NULL; i++)
-	// {
-	// 	cout << values[i] << endl;
-	// }
+	HelperFunctions::sort_array(values);
 
 	ofstream output(argv[2]);
 
@@ -97,7 +89,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	for (int i = 0; values[i + 1] != NULL; i++)
+	for (int i = 0; values[i] != NULL; i++)
 		output << values[i] << endl;
 	output.close();
 	return 0;
