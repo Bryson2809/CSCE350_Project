@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int MAX_VALUES = 1000;
+const int MAX_VALUES = 100000;
 
 class HelperFunctions 
 {
@@ -33,18 +33,22 @@ public:
 
 	}
 
-	void sort_array(array<float, MAX_VALUES> arr)
+	static array<float, MAX_VALUES> sort_array(array<float, MAX_VALUES> arr)
 	{
-		int lastElement = 0;
-
-		while (arr[lastElement + 1] != NULL)
+		float temp = 0.0;
+		for (int i = 0; arr[i + 1] != NULL; i++)
 		{
-			lastElement++;
-			//cout << arr[lastElement] << endl;
+			for (int j = i; arr[j + 1] != NULL; j++)
+			{
+				if (arr[i] > arr[j])
+				{
+					temp = arr[j];
+					arr[j] = arr[i];
+					arr[i] = temp;
+				}
+			}
 		}
-		int test = medianOfThree(0, arr.size() / 2, lastElement, arr);
-
-		//cout << test << endl;
+		return arr;
 	}
 };
 
@@ -64,23 +68,26 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	//float values[MAX_VALUES];
-
 	array<float, MAX_VALUES> values;
 
 	for (int i = 0; input >> values[i]; i++);
 
-	cout << "Should be 3 4 8 5 1 44 56 73 69 420 32 12" << endl;
+	// cout << "Should be 3 4 8 5 1 44 56 73 69 420 32 12" << endl;
 
-	for (int i = 0; values[i + 1] != NULL; i++)
-	{
-		cout << values[i] << endl;
-	}
+	// for (int i = 0; values[i + 1] != NULL; i++)
+	// {
+	// 	cout << values[i] << endl;
+	// }
 
 	input.close();
+	
+	values = HelperFunctions::sort_array(values);
 
-	HelperFunctions helper;
-	helper.sort_array(values);
+	// cout << "\nSorted Array Hopefully----------------------\n" << endl;
+	// for (int i = 0; values[i + 1] != NULL; i++)
+	// {
+	// 	cout << values[i] << endl;
+	// }
 
 	ofstream output(argv[2]);
 
@@ -90,11 +97,8 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	for (int i = 0; i < 12; i++)
-	{
-		output << values[i] << " ";
-	}
-
+	for (int i = 0; values[i + 1] != NULL; i++)
+		output << values[i] << endl;
 	output.close();
 	return 0;
 }
