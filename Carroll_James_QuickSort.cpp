@@ -12,14 +12,23 @@ const int MAX_VALUES = 100000;
 class HelperFunctions 
 {
 private:
-	int medianOfThree(int first, int middle, int last, array<float, MAX_VALUES> arr)
+	static int medianOfThree(array<float, MAX_VALUES> arr)
 	{
-		if ((arr[first] < arr[last] && arr[first] > arr[middle]) || (arr[first] > arr[last] && arr[first] < arr[middle]))
-			return first;
-		else if ((arr[middle] < arr[last] && arr[middle] > arr[first]) || (arr[middle] < arr[first] && arr[middle] > arr[last]))
-			return middle;
-		else
-			return last;
+		int first = 0;
+		int last = 0;
+		int pivot = 0;
+		for (int i = 0; arr[i] != NULL; i++)
+			last++;
+		int middle = last / 2;
+
+		pivot = HelperFunctions::findPivot(arr[first], arr[middle], arr[last]);
+
+		if (arr[first] > arr[middle])
+			HelperFunctions::swap(first, middle, arr);
+		if (arr[middle] > arr[last])
+			HelperFunctions::swap(middle, last, arr);
+		if (arr[first] > arr[last])
+			HelperFunctions::swap(first, last, arr);
 	}
 
 	static void swap(int leftIndex, int rightIndex, array<float, MAX_VALUES>& arr)
@@ -28,6 +37,16 @@ private:
 		temp = arr[leftIndex];
 		arr[leftIndex] = arr[rightIndex];
 		arr[rightIndex] = temp;
+	}
+
+	static int findPivot(float first, float middle, float last)
+	{
+		if ((first < middle && middle < last) || (first > middle&& middle > last))
+			return middle;
+		else if ((middle > first&& first > last) || (middle < first && first < last))
+			return first;
+		else
+			return last;
 	}
 
 public:
